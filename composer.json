@@ -10,12 +10,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Flycartinc\\Events\\": "src/"
+            "Events\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "Yogeshwaran Manoharan"
+            "name": "Ashlin Reju"
         }
     ]
 }

@@ -1,29 +1,38 @@
 <?php
-namespace Flycartinc\Events;
-
-use Flycartinc\Events\Platforms\Wordpress;
-use Flycartinc\Events\Platforms\Joomla;
+namespace Events;
+use Events\Wordpress\Wordpress;
 
 class Event
 {
-    public static $platform;
+    public static $platform = 'wordpress';
 
-    public static function __callStatic($name, $arguments)
+    public static function listen( $tag, $callback, $priority, $type = 'action' )
     {
-        switch ($name) {
+        if ( self::$platform === 'wordpress' )
+        {
+            if ( $type == 'filter')
+            {
+                Wordpress::AddFilter($tag, $callback, $priority);
+            }
+            else
+            {
+                Wordpress::AddAction($tag, $callback, $priority);
+            }
+        }
+    }
 
-            case 'wordpress':
-                return new Wordpress();
-                break;
-
-            case 'joomla':
-                return new Joomla();
-                break;
-
-            default:
-                return new Wordpress();
-                break;
-
+    public static function trigger( $tag, $args, $type = 'action' )
+    {
+        if ( self::$platform === 'wordpress' )
+        {
+            if ( $type == 'filter' )
+            {
+                return Wordpress::ApplyFilter($tag, $args);
+            }
+            else
+            {
+                Wordpress::TriggerAction($tag, $args);
+            }
         }
     }
 
